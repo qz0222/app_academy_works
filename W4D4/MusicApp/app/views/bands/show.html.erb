@@ -1,0 +1,24 @@
+<h1><%= @band.name %></h1>
+
+<form action="<%= edit_band_url %>" method="get">
+  <input type="submit" value="Edit Band">
+</form>
+
+<form action="/bands/<%= @band.id %>" method="post">
+  <input type="hidden" name="_method" value="delete">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token  %>">
+  <input type="submit" value="Delete Band">
+</form>
+
+<ul>
+<% @band.albums.each do |album| %>
+  <li><a href="<%= album_url(album) %>"><h2><%= album.name %></h2></a>
+    <h3>  type: <%= album.status %></h3>
+    <ol>
+      <% album.tracks.each do |track| %>
+        <li><h4><%= track.name %>, <%= track.status %></h4></li>
+      <% end %>
+    </ol>
+  </li>
+<% end %>
+</ul>

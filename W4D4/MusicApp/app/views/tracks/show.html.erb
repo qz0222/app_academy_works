@@ -1,0 +1,23 @@
+<h1><%= @track.name %></h1>
+
+<form action="<%= edit_track_url %>" method="get">
+  <input type="submit" value="Edit Track">
+</form>
+
+<form action="/tracks/<%= @track.id %>" method="post">
+  <input type="hidden" name="_method" value="delete">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token  %>">
+  <input type="submit" value="Delete Track">
+</form>
+
+<h2>type: </h2><h4><%= @track.status %></h4>
+
+<h2>description: </h2><h4><p><%= @track.description %></p></h4>
+
+<h2>notes: </h2>
+<%= render :partial => "notes/form", :locals => { :track_id => @track.id } %>
+
+
+<% @track.notes.each do |note| %>
+  <%= render :partial =>"notes/note", :locals => { :this_note => note }%>
+<% end %>

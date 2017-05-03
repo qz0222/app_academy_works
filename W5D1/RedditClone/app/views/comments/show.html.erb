@@ -1,0 +1,34 @@
+<h1>Comment</h1>
+<h2><%= @comment.content %></h2>
+
+<br><br>
+<label for="Add Nested Comment">Add Nested Comment</label>
+<br>
+<form action="<%= comments_url %>" method="post">
+  <%= auth %>
+
+<input type="radio" name="comment[parent_comment_id]" value="">
+<br>
+<% def show_nested_commments(comment, indent) %>
+  <% return if comment.child_comments.empty? %>
+  <% indent += 1 %>
+  <% comment.child_comments.each do |child| %>
+      <a href="<%= comment_url(child) %>"><%= ("&nbsp;&nbsp;&nbsp; | " * indent+"--").html_safe + child.content %></a>
+      <input type="radio" name="comment[parent_comment_id]" value="<%= child.id%>">
+      <br>
+      <% show_nested_commments(child, indent) %>
+
+  <% end %>
+<% end %>
+<% show_nested_commments(@comment, 0) %>
+
+
+
+  <label for="Content">Content</label>
+  <br><br>
+  <textarea name="comment[content]" rows="8" cols="80" id="Content">
+  </textarea>
+  <input type="hidden" name="comment[post_id]" value="<%= @comment.post.id %>">
+
+<input type="submit" value="Add Comment">
+</form>

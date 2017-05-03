@@ -1,0 +1,11 @@
+<h1>Cats</h1>
+<hr>
+<ul>
+<% @cats.each do |cat| %>
+  <li><a href="<%= cat_url(cat) %>"><%= cat.name %></a></li>
+<% end %>
+</ul>
+<hr>
+<a href="<%= new_cat_rental_request_url %>">Rent Cat</a>
+<br><br>
+<a href="<%= new_cat_url %>">Add New Cat</a>

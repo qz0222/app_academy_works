@@ -1,0 +1,64 @@
+<h1><%= @post.title %></h1>
+
+<h2><%= @post.content %></h2>
+
+<br><br>
+
+<label for="Comment to post">Comment to post</label>
+<form action="<%= comments_url %>" method="post">
+  <%= auth %>
+  <label for="Content">Content</label>
+  <textarea name="comment[content]" rows="8" cols="80" id="Content">
+  </textarea>
+  <input type="hidden" name="comment[post_id]" value="<%= @post.id %>">
+  <!-- <input type="hidden" name="comment[parent_comment_id]" value=""> -->
+<input type="submit" value="Add Comment">
+</form>
+
+<br><br>
+
+<% def show_nested_comments(all_comments, current_comment, indent) %>
+  <% indent += 1 %>
+ <a href="<%= comment_url(current_comment) %>"><%= ("&nbsp;&nbsp;&nbsp; | " * indent+"--").html_safe + current_comment.content %></a><br>
+  <% all_comments[current_comment.id].each do |comment| %>
+   <% show_nested_comments(all_comments, comment, indent) %>
+ <% end %>
+<% end %>
+
+<% @all_comments[nil].each do |comment| %>
+  <% show_nested_comments(@all_comments, comment, 0) %>
+<% end %>
+
+
+<!--
+<%# @all_comments.each do |comment| %>
+  <%# if comment.parent_comment_id.nil? %>
+    <a href="<%#= comment_url(comment) %>"><%#= comment.content %></a>
+    <br>
+    <%# show_nested_commments(comment, 0) %>
+  <%# end %>
+<%# end %>
+-->
+
+<!--
+<%# parent_comments = @post.comments.where(parent_comment_id: nil) %>
+<ul>
+  <%# parent_comments.each do |parent_comment| %>
+    <li><a href="<%#= comment_url(parent_comment) %>"><%#= parent_comment.content %></a></li>
+  <%# end %>
+</ul>
+-->
+
+<!--
+<%# def show_nested_commments(comment, indent) %>
+  <%# return if comment.child_comments.empty? %>
+  <%# indent += 1 %>
+  <%# comment.child_comments.each do |child| %>
+      <a href="<%#= comment_url(child) %>"><%#= ("&nbsp;&nbsp;&nbsp; | " * indent+"--").html_safe + child.content %></a>
+
+      <br>
+      <%# show_nested_commments(child, indent) %>
+
+  <%# end %>
+<%# end %>
+-->
